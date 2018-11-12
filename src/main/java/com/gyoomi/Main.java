@@ -20,6 +20,12 @@ import java.util.Date;
  */
 public class Main {
 
+    private static UserMapper userMapper;
+
+    static {
+        userMapper = new UserMapperImpl();
+    }
+
     public static void main(String[] args) {
         UserMapper userMapper = new UserMapperImpl();
         User user = new User();
