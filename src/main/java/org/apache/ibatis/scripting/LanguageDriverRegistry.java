@@ -1,5 +1,5 @@
 /**
- *    Copyright 2009-2018 the original author or authors.
+ *    Copyright 2009-2017 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -23,17 +23,17 @@ import java.util.Map;
  */
 public class LanguageDriverRegistry {
 
-  private final Map<Class<? extends LanguageDriver>, LanguageDriver> LANGUAGE_DRIVER_MAP = new HashMap<>();
+  private final Map<Class<?>, LanguageDriver> LANGUAGE_DRIVER_MAP = new HashMap<Class<?>, LanguageDriver>();
 
-  private Class<? extends LanguageDriver> defaultDriverClass;
+  private Class<?> defaultDriverClass;
 
-  public void register(Class<? extends LanguageDriver> cls) {
+  public void register(Class<?> cls) {
     if (cls == null) {
       throw new IllegalArgumentException("null is not a valid Language Driver");
     }
     if (!LANGUAGE_DRIVER_MAP.containsKey(cls)) {
       try {
-        LANGUAGE_DRIVER_MAP.put(cls, cls.newInstance());
+        LANGUAGE_DRIVER_MAP.put(cls, (LanguageDriver) cls.newInstance());
       } catch (Exception ex) {
         throw new ScriptingException("Failed to load language driver for " + cls.getName(), ex);
       }
@@ -44,13 +44,13 @@ public class LanguageDriverRegistry {
     if (instance == null) {
       throw new IllegalArgumentException("null is not a valid Language Driver");
     }
-    Class<? extends LanguageDriver> cls = instance.getClass();
+    Class<?> cls = instance.getClass();
     if (!LANGUAGE_DRIVER_MAP.containsKey(cls)) {
       LANGUAGE_DRIVER_MAP.put(cls, instance);
     }
   }
   
-  public LanguageDriver getDriver(Class<? extends LanguageDriver> cls) {
+  public LanguageDriver getDriver(Class<?> cls) {
     return LANGUAGE_DRIVER_MAP.get(cls);
   }
 
@@ -58,11 +58,11 @@ public class LanguageDriverRegistry {
     return getDriver(getDefaultDriverClass());
   }
 
-  public Class<? extends LanguageDriver> getDefaultDriverClass() {
+  public Class<?> getDefaultDriverClass() {
     return defaultDriverClass;
   }
 
-  public void setDefaultDriverClass(Class<? extends LanguageDriver> defaultDriverClass) {
+  public void setDefaultDriverClass(Class<?> defaultDriverClass) {
     register(defaultDriverClass);
     this.defaultDriverClass = defaultDriverClass;
   }

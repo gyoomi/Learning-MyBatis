@@ -1,5 +1,5 @@
 /**
- *    Copyright 2009-2018 the original author or authors.
+ *    Copyright 2009-2017 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,7 +15,11 @@
  */
 package org.apache.ibatis.scripting.xmltags;
 
-import ognl.DefaultClassResolver;
+import java.util.HashMap;
+import java.util.Map;
+
+import ognl.ClassResolver;
+
 import org.apache.ibatis.io.Resources;
 
 /**
@@ -27,11 +31,25 @@ import org.apache.ibatis.io.Resources;
  *
  * @see <a href='https://github.com/mybatis/mybatis-3/issues/161'>Issue 161</a>
  */
-public class OgnlClassResolver extends DefaultClassResolver {
+public class OgnlClassResolver implements ClassResolver {
+
+  private final Map<String, Class<?>> classes = new HashMap<String, Class<?>>(101);
 
   @Override
-  protected Class toClassForName(String className) throws ClassNotFoundException {
-    return Resources.classForName(className);
+  public Class classForName(String className, Map context) throws ClassNotFoundException {
+    Class<?> result = null;
+    if ((result = classes.get(className)) == null) {
+      try {
+        result = Resources.classForName(className);
+      } catch (ClassNotFoundException e1) {
+        if (className.indexOf('.') == -1) {
+          result = Resources.classForName("java.lang." + className);
+          classes.put("java.lang." + className, result);
+        }
+      }
+      classes.put(className, result);
+    }
+    return result;
   }
 
 }

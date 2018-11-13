@@ -1,5 +1,5 @@
 /**
- *    Copyright 2009-2018 the original author or authors.
+ *    Copyright 2009-2017 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -42,8 +42,8 @@ public class BatchExecutor extends BaseExecutor {
 
   public static final int BATCH_UPDATE_RETURN_VALUE = Integer.MIN_VALUE + 1002;
 
-  private final List<Statement> statementList = new ArrayList<>();
-  private final List<BatchResult> batchResultList = new ArrayList<>();
+  private final List<Statement> statementList = new ArrayList<Statement>();
+  private final List<BatchResult> batchResultList = new ArrayList<BatchResult>();
   private String currentSql;
   private MappedStatement currentStatement;
 
@@ -103,7 +103,6 @@ public class BatchExecutor extends BaseExecutor {
     StatementHandler handler = configuration.newStatementHandler(wrapper, ms, parameter, rowBounds, null, boundSql);
     Connection connection = getConnection(ms.getStatementLog());
     Statement stmt = handler.prepare(connection, transaction.getTimeout());
-    stmt.closeOnCompletion();
     handler.parameterize(stmt);
     return handler.<E>queryCursor(stmt);
   }
@@ -111,7 +110,7 @@ public class BatchExecutor extends BaseExecutor {
   @Override
   public List<BatchResult> doFlushStatements(boolean isRollback) throws SQLException {
     try {
-      List<BatchResult> results = new ArrayList<>();
+      List<BatchResult> results = new ArrayList<BatchResult>();
       if (isRollback) {
         return Collections.emptyList();
       }

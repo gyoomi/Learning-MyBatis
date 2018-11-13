@@ -1,5 +1,5 @@
 /**
- *    Copyright 2009-2018 the original author or authors.
+ *    Copyright 2009-2015 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -34,22 +34,19 @@ public class DoubleTypeHandler extends BaseTypeHandler<Double> {
   @Override
   public Double getNullableResult(ResultSet rs, String columnName)
       throws SQLException {
-    double result = rs.getDouble(columnName);
-    return (result == 0 && rs.wasNull()) ? null : result;
+    return rs.getDouble(columnName);
   }
 
   @Override
   public Double getNullableResult(ResultSet rs, int columnIndex)
       throws SQLException {
-    double result = rs.getDouble(columnIndex);
-    return (result == 0 && rs.wasNull()) ? null : result;
+    return rs.getDouble(columnIndex);
   }
 
   @Override
   public Double getNullableResult(CallableStatement cs, int columnIndex)
       throws SQLException {
-    double result = cs.getDouble(columnIndex);
-    return (result == 0 && cs.wasNull()) ? null : result;
+    return cs.getDouble(columnIndex);
   }
 
 }

@@ -1,5 +1,5 @@
 /**
- *    Copyright 2009-2018 the original author or authors.
+ *    Copyright 2009-2017 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -18,8 +18,6 @@ package org.apache.ibatis.reflection.invoker;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 
-import org.apache.ibatis.reflection.Reflector;
-
 /**
  * @author Clinton Begin
  */
@@ -32,16 +30,7 @@ public class SetFieldInvoker implements Invoker {
 
   @Override
   public Object invoke(Object target, Object[] args) throws IllegalAccessException, InvocationTargetException {
-    try {
-      field.set(target, args[0]);
-    } catch (IllegalAccessException e) {
-      if (Reflector.canControlMemberAccessible()) {
-        field.setAccessible(true);
-        field.set(target, args[0]);
-      } else {
-        throw e;
-      }
-    }
+    field.set(target, args[0]);
     return null;
   }
 

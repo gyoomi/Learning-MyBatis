@@ -1,5 +1,5 @@
 /**
- *    Copyright 2009-2018 the original author or authors.
+ *    Copyright 2009-2017 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -73,9 +73,13 @@ public class Plugin implements InvocationHandler {
       throw new PluginException("No @Intercepts annotation was found in interceptor " + interceptor.getClass().getName());      
     }
     Signature[] sigs = interceptsAnnotation.value();
-    Map<Class<?>, Set<Method>> signatureMap = new HashMap<>();
+    Map<Class<?>, Set<Method>> signatureMap = new HashMap<Class<?>, Set<Method>>();
     for (Signature sig : sigs) {
-      Set<Method> methods = signatureMap.computeIfAbsent(sig.type(), k -> new HashSet<>());
+      Set<Method> methods = signatureMap.get(sig.type());
+      if (methods == null) {
+        methods = new HashSet<Method>();
+        signatureMap.put(sig.type(), methods);
+      }
       try {
         Method method = sig.type().getMethod(sig.method(), sig.args());
         methods.add(method);
@@ -87,7 +91,7 @@ public class Plugin implements InvocationHandler {
   }
 
   private static Class<?>[] getAllInterfaces(Class<?> type, Map<Class<?>, Set<Method>> signatureMap) {
-    Set<Class<?>> interfaces = new HashSet<>();
+    Set<Class<?>> interfaces = new HashSet<Class<?>>();
     while (type != null) {
       for (Class<?> c : type.getInterfaces()) {
         if (signatureMap.containsKey(c)) {
