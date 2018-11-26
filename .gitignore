@@ -1,0 +1,14 @@
+# Created by .ignore support plugin (hsz.mobi)
+.idea/Learning-MyBatis.iml
+.idea/dataSources.local.xml
+.idea/dataSources.xml
+.idea/dataSources/
+.idea/inspectionProfiles/
+.idea/markdown-navigator.xml
+.idea/markdown-navigator/
+.idea/shelf/
+.idea/sqldialects.xml
+.idea/vcs.xml
+.idea/workspace.xml
+target/
+/.idea/misc.xml
