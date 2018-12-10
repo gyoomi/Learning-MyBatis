@@ -7,7 +7,9 @@
 package com.gyoomi.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 类功能描述
@@ -26,6 +28,9 @@ public class User implements Serializable {
     private Integer status;
     private Date createDate;
     private String remark;
+    private Order order;
+
+    private List<Order> orders = new ArrayList<>();
 
     public Integer getId() {
         return id;
@@ -99,6 +104,22 @@ public class User implements Serializable {
         this.remark = remark;
     }
 
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -111,6 +132,8 @@ public class User implements Serializable {
                 ", status=" + status +
                 ", createDate=" + createDate +
                 ", remark='" + remark + '\'' +
+                ", order=" + order +
+                ", orders=" + orders +
                 '}';
     }
 }
