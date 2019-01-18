@@ -52,4 +52,6 @@
     <select id="findById" resultMap="resultMap" parameterType="integer">
         SELECT <include refid="fields"/> FROM t_user where id = #{id}
     </select>
+
+    <cache/>
 </mapper>

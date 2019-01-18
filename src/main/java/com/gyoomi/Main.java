@@ -6,11 +6,15 @@
 
 package com.gyoomi;
 
+import com.gyoomi.entity.Blog;
 import com.gyoomi.entity.User;
+import com.gyoomi.mapper.BlogMapper;
 import com.gyoomi.mapper.UserMapper;
+import com.gyoomi.mapper.impl.BlogMapperImpl;
 import com.gyoomi.mapper.impl.UserMapperImpl;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 类功能描述
@@ -27,6 +31,12 @@ public class Main {
     }
 
     public static void main(String[] args) {
+        BlogMapper blogMapper = new BlogMapperImpl();
+        List<Blog> byList = blogMapper.findByList();
+        System.out.println(byList);
+    }
+
+    public void test01() {
         UserMapper userMapper = new UserMapperImpl();
         User user = new User();
         user.setPassword("123");
